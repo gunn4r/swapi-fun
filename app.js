@@ -2,37 +2,38 @@ angular.module('swapi', [])
 
 .controller('swCtrl', function($scope, swService){
     
-    swService.getAllPeople().then(function(result){
-        var data = result.data;
-        $scope.people = data.results;
-        $scope.pageNum = getPageNum(data);
-    });
+    //Init the pagination url variable.
+    var nextPageUrl = null;
 
-    $scope.getNext = function(page){
-        swService.getAllPeople(page).then(function(result){ 
-            result.data.results.forEach(function(item){
-                $scope.people.push(item);
-            });
-            $scope.pageNum = getPageNum(result.data);
+    //Init the data to get the first 10 people and add them to $scope.people.
+    swService.getAllPeople()
+        .then(function(response){
+            $scope.people = response.data.results;
+            nextPageUrl = response.data.next;
         });
+
+    //Get next page of 10 results
+    $scope.getNext = function(){
+        //Grab all people. If a nextPageUrl is provided then grab the next page of results.
+        swService.getAllPeople(nextPageUrl)
+            .then(function(response){ 
+                response.data.results.forEach(function(item){
+                    $scope.people.push(item);
+                });
+                nextPageUrl = response.data.next;
+            });
     };
 
-    function getPageNum(data){
-      return data.next.substring(data.next.indexOf('=')+1, data.next.length);
-    }
 })
 
 .service('swService', function($http){
 
-    this.getAllPeople = function(page){
-
-        var pageUrl = page ? '/?page='+page : '';
-
+    this.getAllPeople = function(nextPageUrl){
+        var pageUrl = nextPageUrl || 'http://swapi.co/api/people';
         return $http({
             method: 'GET',
-            url: 'http://swapi.co/api/people' + pageUrl
+            url: pageUrl
         });
-        
     };
 
 });
