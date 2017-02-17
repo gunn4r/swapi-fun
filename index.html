@@ -17,14 +17,13 @@
 </head>
 
 <body ng-controller="swCtrl">
-        <button ng-click="getNext(pageNum)">Get Next 10</button>
+    <button ng-click="getNext()">Get Next 10</button>
 
     <div class="person" ng-repeat="person in people">
         <h1>{{person.name}}</h1>
         <p>Height: {{person.height}}</p>
         <p>Hair: {{person.hair_color}}</p>
     </div>
-
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.js"></script>

@@ -6,8 +6,8 @@ angular.module('swapi', [])
     var nextPageUrl = null;
 
     //Init the data to get the first 10 people and add them to $scope.people.
-    swService.getAllPeople()
-        .then(function(response){
+    var thisIsAPromise = swService.getAllPeople();        
+        thisIsAPromise.then(function(response){
             $scope.people = response.data.results;
             nextPageUrl = response.data.next;
         });
@@ -24,9 +24,19 @@ angular.module('swapi', [])
             });
     };
 
+    swService.getPeopleWithShips().then(function(response){
+        console.log(response)
+    });
+
 })
 
-.service('swService', function($http){
+
+
+
+
+.service('swService', function($http, $q){
+
+
 
     this.getAllPeople = function(nextPageUrl){
         var pageUrl = nextPageUrl || 'http://swapi.co/api/people';
@@ -35,5 +45,36 @@ angular.module('swapi', [])
             url: pageUrl
         });
     };
+
+    this.getShips = function(){
+        return $http({
+            method: 'GET',
+            url: 'http://swapi.co/api/starships'
+        });
+    }
+
+
+    //STEP 1: Bring $q into service (dependency injection)
+    this.getPeopleWithShips = function(){
+        var deferred = $q.defer(); //STEP 2
+
+        $http.get('http://swapi.co/api/people').then(function(response){
+            var people = response.data;
+           
+            $http.get('http://swapi.co/api/starships').then(function(response){
+                var ships = response.data;
+                deferred.resolve([people, ships]); //STEP 3
+            });
+
+        });
+
+        return deferred.promise; //STEP 4
+
+    }
+
+
+
+
+
 
 });
