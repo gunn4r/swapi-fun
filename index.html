@@ -1,32 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="swapi">
+
 <head>
     <meta charset="UTF-8">
     <title>SWAPI</title>
-
-    <style>
-        .person{ 
-            display: inline-block; 
-            padding: 30px;
-            background: #f7f7f7;
-            border: 1px solid #ccc;
-            margin: 10px;   
-        }
-    </style>
-
+    <link rel="stylesheet" href="node_modules/semantic-ui-css/semantic.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
-<body ng-controller="swCtrl">
-    <button ng-click="getNext()">Get Next 10</button>
-
-    <div class="person" ng-repeat="person in people">
-        <h1>{{person.name}}</h1>
-        <p>Height: {{person.height}}</p>
-        <p>Hair: {{person.hair_color}}</p>
+<body>
+    <div class="ui attached stackable menu">
+        <div class="ui container">
+            <div class="header item"> Star Wars API</div>
+            <a class="item" ui-sref="home">Home</a>
+            <a class="item" ui-sref="about">About</a>
+        </div>
     </div>
-
-
+    <div class="ui container">
+        <ui-view></ui-view>
+    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.js"></script>
-    <script src="app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.4.2/angular-ui-router.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/mainCtrl.js"></script>
+    <script src="js/mainService.js"></script>
 </body>
-</html>                                                     
+
+</html>

@@ -1,0 +1,40 @@
+<div class="ui stackable two column grid">
+    <div class="four wide column">
+        <div class="ui vertical menu">
+            <div class="item">
+                <div class="ui input"><input type="text" placeholder="Search..."></div>
+            </div>
+            <a class="item" ng-click="getNext()">Get Next 10</a>
+        </div>
+    </div>
+    <div class="twelve wide column">
+        <div ng-show="loading">
+            <div class="ui active centered inline loader">
+                <div class="ui text loader">Loading</div>
+            </div>
+        </div>
+        <table class="ui very basic celled table" ng-hide="loading">
+            <thead>
+                <tr>
+                    <th>Character</th>
+                    <th>ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="person in people track by $index">
+                    <td>
+                        <h4 class="ui header">
+                            <div class="content">
+                                <a ui-sref="person({id: getPersonId($index)})">{{person.name}}</a>
+                                <!--<div class="sub header">Derp</div>-->
+                            </div>
+                        </h4>
+                    </td>
+                    <td>
+                        {{getPersonId($index)}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
