@@ -6,7 +6,17 @@ angular.module('swapi', ['ui.router'])
         .state('home', {
             url: '/',
             templateUrl: '../views/home.html',
-            controller: 'swCtrl'
+            controller: 'swCtrl',
+            resolve: {
+                frontLoadData: function(swService){
+                    return swService.getAllPeople()
+                        .then(function(response){
+                            return response.data;
+                        }, function(){
+                            return 'MASSIVE ERROR';
+                        });
+                }
+            }
         })
         .state('about', {
             url: '/about',

@@ -1,18 +1,14 @@
 angular.module('swapi')
 
-.controller('swCtrl', function($scope, swService, $stateParams){
+.controller('swCtrl', function($scope, swService, $stateParams, frontLoadData){
     
     //Init the pagination url variable.
     var nextPageUrl = null;
-    $scope.loading = true;
+    $scope.loading = false;
 
-    //Init the data to get the first 10 people and add them to $scope.people.
-    swService.getAllPeople()
-        .then(function(response){
-            $scope.people = response.data.results;
-            nextPageUrl = response.data.next;
-            $scope.loading = false;
-        });
+    //Get data from the route resolve "frontLoadData".
+    $scope.people = frontLoadData.results;
+    nextPageUrl = frontLoadData.next;
 
     //Get next page of 10 results
     $scope.getNext = function(){
